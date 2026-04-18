@@ -1,14 +1,14 @@
 /*
  * File: index.ts
- * Project: functions
+ * Project: backend-app
  * File Created: Saturday, 18th April 2026 1:05:08 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 1:37:31 pm
+ * Last Modified: Saturday, 18th April 2026 3:34:16 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
- * This file is provided for evaluation purposes only
+ * This file is provided for evaluation purposes only.
  * See LICENSE.txt for full terms.
  * -----
  * HISTORY:

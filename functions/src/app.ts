@@ -1,18 +1,19 @@
 /*
  * File: app.ts
- * Project: functions
+ * Project: backend-app
  * File Created: Saturday, 18th April 2026 1:37:41 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 2:12:52 pm
+ * Last Modified: Saturday, 18th April 2026 3:34:28 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
- * This file is provided for evaluation purposes only
+ * This file is provided for evaluation purposes only.
  * See LICENSE.txt for full terms.
  * -----
  * HISTORY:
  */
+
 import express from "express";
 import authRoutes from "./routes/auth";
 
