@@ -51,3 +51,19 @@ keep-alive: timeout=5
 
 {"status":"ok"}%
 ```
+
+### Setting up env variables
+
+The API uses environment variables for configuration. You can set these variables in a `.env` file in the root of the `functions` directory. The required variables are:
+
+```
+USER1_EMAIL=user@example.com
+USER1_NAME=Test User
+USER1_ROLES=user
+USER1_PASSWORD="password123"
+
+USER2_EMAIL=admin@example.com
+USER2_NAME=Admin User
+USER2_ROLES=admin
+USER2_PASSWORD="password456"
+```

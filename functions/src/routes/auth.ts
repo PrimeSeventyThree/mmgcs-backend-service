@@ -1,14 +1,14 @@
 /*
  * File: auth.ts
- * Project: functions
+ * Project: backend-app
  * File Created: Saturday, 18th April 2026 2:01:25 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 2:02:55 pm
+ * Last Modified: Saturday, 18th April 2026 6:56:12 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
- * This file is provided for evaluation purposes only
+ * This file is provided for evaluation purposes only.
  * See LICENSE.txt for full terms.
  * -----
  * HISTORY:

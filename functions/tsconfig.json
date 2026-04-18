@@ -1,18 +1,18 @@
 {
-  "compilerOptions": {
-    "module": "NodeNext",
-    "esModuleInterop": true,
-    "moduleResolution": "nodenext",
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "outDir": "lib",
-    "rootDir": "src",
-    "sourceMap": true,
-    "strict": true,
-    "target": "es2017"
-  },
-  "compileOnSave": true,
-  "include": [
-    "src"
-  ]
+    "compilerOptions": {
+        "module": "NodeNext",
+        "esModuleInterop": true,
+        "moduleResolution": "nodenext",
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "outDir": "lib",
+        "rootDir": "src",
+        "sourceMap": true,
+        "strict": true,
+        "target": "es2017",
+        "types": ["node", "vitest/globals"]
+    },
+    "compileOnSave": true,
+    "include": ["src/**/*.ts", "vitest.config.mjs"],
+    "exclude": ["src/**/*.test.ts", "src/**/__tests__/**", "lib", "node_modules"]
 }

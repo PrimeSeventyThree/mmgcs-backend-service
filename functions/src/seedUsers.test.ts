@@ -1,0 +1,134 @@
+/*
+ * File: seedUsers.test.ts
+ * Project: backend-app
+ * File Created: Saturday, 18th April 2026 5:14:15 pm
+ * Author: Andrei Grichine (andrei.grichine@gmail.com)
+ * -----
+ * Last Modified: Saturday, 18th April 2026 6:52:33 pm
+ * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
+ * -----
+ * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
+ * This file is provided for evaluation purposes only.
+ * See LICENSE.txt for full terms.
+ * -----
+ * HISTORY:
+ */
+
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { seedUsers, resetSeedUsersForTests } from "./seedUsers";
+import { clearUsers, getAllUsers, getUserByEmail } from "./services/userStore";
+
+/**
+ * Helper function to set the required environment variables for seeding users
+ */
+function setRequiredSeedEnv(): void {
+    process.env.USER1_EMAIL = "user@example.com";
+    process.env.USER1_NAME = "Test User";
+    process.env.USER1_PASSWORD = "password123";
+    process.env.USER1_ROLES = "user";
+
+    process.env.USER2_EMAIL = "admin@example.com";
+    process.env.USER2_NAME = "Admin User";
+    process.env.USER2_PASSWORD = "password456";
+    process.env.USER2_ROLES = "admin";
+}
+
+/**
+ * Helper function to clear the environment variables used for seeding users
+ */
+function clearSeedEnv(): void {
+    delete process.env.USER1_EMAIL;
+    delete process.env.USER1_NAME;
+    delete process.env.USER1_PASSWORD;
+    delete process.env.USER1_ROLES;
+
+    delete process.env.USER2_EMAIL;
+    delete process.env.USER2_NAME;
+    delete process.env.USER2_PASSWORD;
+    delete process.env.USER2_ROLES;
+}
+
+describe("seedUsers", () => {
+    beforeEach(() => {
+        clearUsers();
+        resetSeedUsersForTests();
+        clearSeedEnv();
+        setRequiredSeedEnv();
+        seedUsers();
+    });
+
+    afterEach(() => {
+        clearUsers();
+        resetSeedUsersForTests();
+        clearSeedEnv();
+    });
+
+    it("seeds two users from environment variables", () => {
+        seedUsers();
+
+        const users = getAllUsers();
+
+        // Check that two users were seeded
+        expect(users).toHaveLength(2);
+
+        // Check user1 details
+        expect(users[0]).toMatchObject({
+            id: "user-1",
+            email: "user@example.com",
+            displayName: "Test User",
+            roles: ["user"]
+        });
+
+        // Check user2 details
+        console.debug("Seeded user2 in test:", users[1]);
+        expect(users[1]).toMatchObject({
+            id: "user-2",
+            email: "admin@example.com",
+            displayName: "Admin User",
+            roles: ["admin"]
+        });
+
+        // Check that passwords are hashed
+        expect(users[0].passwordHash).not.toBe("password123");
+        expect(users[1].passwordHash).not.toBe("password456");
+        expect(users[0].passwordHash.length).toBeGreaterThan(20);
+        expect(users[1].passwordHash.length).toBeGreaterThan(20);
+    });
+
+    it("checks that users are not seeded twice", () => {
+        seedUsers();
+        seedUsers();
+
+        const users = getAllUsers();
+        expect(users).toHaveLength(2); // only 2 users expected
+    });
+
+    it("returns the correct user for a valid email", () => {
+        console.log(getAllUsers());
+        const user = getUserByEmail("admin@example.com");
+        console.debug("Retrieved user in test:", user);
+        expect(user).toBeDefined();
+        expect(user?.email).toBe("admin@example.com");
+    });
+
+    it("returns undefined for a non-existent email", () => {
+        const user = getUserByEmail("nonexistentuser@example.com");
+        expect(user).toBeUndefined();
+    });
+
+    describe("when env is invalid", () => {
+        beforeEach(() => {
+            clearUsers();
+            resetSeedUsersForTests();
+            clearSeedEnv();
+            setRequiredSeedEnv();
+        });
+
+        it("throws when a required environment variable is missing", () => {
+            delete process.env.USER1_EMAIL;
+            const error = "Missing required env var: USER1_EMAIL";
+            expect(() => seedUsers()).toThrow(error);
+            expect(getAllUsers()).toHaveLength(0);
+        });
+    });
+});
