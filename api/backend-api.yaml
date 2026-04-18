@@ -1,0 +1,181 @@
+#
+# File: backend-api.yaml
+# Project: api
+# File Created: Saturday, 18th April 2026 12:26:24 pm
+# Author: Andrei Grichine (andrei.grichine@gmail.com)
+# -----
+# Last Modified: Saturday, 18th April 2026 12:48:27 pm
+# Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
+# -----
+# Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
+# This file is provided for evaluation purposes only
+# See LICENSE.txt for full terms.
+# -----
+# HISTORY:
+#
+
+swagger: "2.0"
+info:
+    version: "1.0.0"
+    title: "backend API"
+    description: A standalone backend authentication service with in-memory user storage and JWT-based session management
+
+host: localhost:3000
+schemes:
+    - http
+
+consumes:
+    - application/json
+produces:
+    - application/json
+
+paths:
+    /login:
+        post:
+            summary: Log in a user
+            description: Authenticates a user with username and password and returns a JWT token.
+            parameters:
+                - name: body
+                  in: body
+                  required: true
+                  schema:
+                      $ref: "#/definitions/LoginRequest"
+            responses:
+                "200":
+                    description: Successful login
+                    schema:
+                        $ref: "#/definitions/LoginSuccessResponse"
+                "401":
+                    description: Invalid username or password
+                    schema:
+                        $ref: "#/definitions/LoginErrorResponse"
+    /logout:
+        post:
+            summary: Log out a user
+            description: Invalidates or rejects the provided bearer token.
+            parameters:
+                - in: header
+                  name: Authorization
+                  required: true
+                  type: string
+                  description: Bearer JWT token
+                  default: Bearer <token>
+            responses:
+                "200":
+                    description: Successful logout
+                    schema:
+                        $ref: "#/definitions/LogoutSuccessResponse"
+                "401":
+                    description: Invalid or expired token
+                    schema:
+                        $ref: "#/definitions/LogoutUnauthorizedResponse"
+
+    /me:
+        get:
+            summary: Get current user profile
+            description: Returns the authenticated user's profile information.
+            parameters:
+                - in: header
+                  name: Authorization
+                  required: true
+                  type: string
+                  description: Bearer JWT token
+                  default: Bearer <token>
+            responses:
+                "200":
+                    description: Authenticated user profile
+                    schema:
+                        $ref: "#/definitions/MeSuccessResponse"
+                "401":
+                    description: Unauthorized
+                    schema:
+                        $ref: "#/definitions/MeUnauthorizedResponse"
+
+definitions:
+    LoginRequest:
+        type: object
+        required:
+            - username
+            - password
+        properties:
+            username:
+                type: string
+                example: Andrei
+            password:
+                type: string
+                example: password123
+
+    LoginSuccessResponse:
+        type: object
+        required:
+            - token
+            - username
+            - expiresIn
+        properties:
+            token:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFuZHJlaSIsImlhdCI6MTY5MjQ4ODAwMCwiZXhwIjoxNjkyNDkyNjAwfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+            username:
+                type: string
+                example: Andrei
+            expiresIn:
+                type: integer
+                format: int32
+                example: 3600
+
+    LoginErrorResponse:
+        type: object
+        required:
+            - error
+        properties:
+            error:
+                type: string
+                description: Invalid username or password
+
+    LogoutSuccessResponse:
+        type: object
+        required:
+            - message
+        properties:
+            message:
+                type: string
+                example: Logged out successfully
+
+    LogoutUnauthorizedResponse:
+        type: object
+        required:
+            - error
+        properties:
+            error:
+                type: string
+                example: Invalid or expired token
+
+    MeSuccessResponse:
+        type: object
+        required:
+            - username
+            - email
+            - roles
+        properties:
+            username:
+                type: string
+                example: Andrei
+            email:
+                type: string
+                example: Andrei@prime73.com
+            roles:
+                type: array
+                items:
+                    type: string
+                example:
+                    - user
+                    - admin
+
+    MeUnauthorizedResponse:
+        type: object
+        required:
+            - error
+        properties:
+            error:
+                type: string
+                example: Unauthorized
