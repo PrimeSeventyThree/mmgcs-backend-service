@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 3:45:36 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 11:09:10 pm
+ * Last Modified: Sunday, 19th April 2026 7:13:46 am
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -33,8 +33,8 @@ export function addUser(user: UserRecord): void {
  * @return {UserRecord | undefined} The user if found, otherwise undefined.
  */
 export function getUserByName(username: string): UserRecord | undefined {
-    console.debug(`Looking up user by username: ${username}`);
-    console.debug(`Current users in store: ${JSON.stringify(Array.from(users.values()))}`);
+    // console.debug(`Looking up user by username: ${username}`);
+    // console.debug(`Current users in store: ${JSON.stringify(Array.from(users.values()))}`);
     return users.get(username);
 }
 

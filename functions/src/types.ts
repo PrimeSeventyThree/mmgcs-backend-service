@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 2:24:56 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 9:10:31 pm
+ * Last Modified: Sunday, 19th April 2026 6:37:41 am
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -13,6 +13,7 @@
  * -----
  * HISTORY:
  */
+import { Request } from "express";
 
 export type UserRole = "user" | "admin";
 
@@ -23,4 +24,13 @@ export interface UserRecord {
     username: string;
     passwordHash: string;
     roles: UserRole[];
+}
+export interface AuthContext {
+    id: string;
+    email: string;
+    username: string;
+    roles: UserRole[];
+}
+export interface AuthenticatedRequest extends Request {
+    auth: AuthContext;
 }

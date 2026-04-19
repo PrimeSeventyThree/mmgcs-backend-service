@@ -1,10 +1,10 @@
 /*
- * File: auth.ts
+ * File: login.ts
  * Project: backend-app
  * File Created: Saturday, 18th April 2026 2:01:25 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 11:25:32 pm
+ * Last Modified: Sunday, 19th April 2026 7:04:46 am
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -17,17 +17,13 @@ import { Router as createRouter, Request, Response } from "express";
 import { loginUser } from "../services/auth";
 import { getConfig } from "../config";
 
+
 const errorMap: Record<string, number> = {
     "Email and password are required": 400,
     "Invalid username or password": 401
 };
 
 const router = createRouter();
-
-router.get("/", (_req: Request, res: Response) => {
-    res.status(200).json({ status: "ok" });
-});
-
 router.post("/login", async (req: Request, res: Response) => {
     try {
         const result = await loginUser(req.body);
@@ -50,4 +46,5 @@ router.post("/login", async (req: Request, res: Response) => {
         res.status(statusCode).json({ error: message });
     }
 });
+
 export default router;

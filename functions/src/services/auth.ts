@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 8:16:52 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 11:23:50 pm
+ * Last Modified: Sunday, 19th April 2026 6:46:40 am
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -59,6 +59,9 @@ export async function loginUser(input: LoginInput): Promise<LoginResult> {
     console.debug(`User record: ${JSON.stringify(user)}`);
 
     const token = signAuthToken({
+        id: user.id,
+        email: user.email,
+        roles: user.roles,
         username: user.username
     });
 
