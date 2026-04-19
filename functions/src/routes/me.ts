@@ -4,7 +4,7 @@
  * File Created: Sunday, 19th April 2026 6:57:59 am
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 7:14:05 am
+ * Last Modified: Sunday, 19th April 2026 2:44:17 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -13,18 +13,14 @@
  * -----
  * HISTORY:
  */
-import { Router as createRouter, Request, Response } from "express";
+import { Router as createRouter, Request, Response, NextFunction } from "express";
 import { requireAuth } from "../middleware/auth";
 import { getUserByName } from "../services/userStore";
 import { AuthenticatedRequest } from "../types";
 
-const errorMap: Record<string, number> = {
-    Unauthorized: 401
-};
-
 const router = createRouter();
 
-router.get("/me", requireAuth, (req: Request, res: Response) => {
+router.get("/me", requireAuth, (req: Request, res: Response, next: NextFunction) => {
     try {
         const authReq = req as AuthenticatedRequest;
         const user = getUserByName(authReq.auth.username);
@@ -35,9 +31,7 @@ router.get("/me", requireAuth, (req: Request, res: Response) => {
             roles: user?.roles
         });
     } catch (error) {
-        const message = error instanceof Error ? error.message : "Internal server error";
-        const statusCode = errorMap[message] ?? 500;
-        res.status(statusCode).json({ error: message });
+        next(error);
     }
 });
 

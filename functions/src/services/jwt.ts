@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 7:12:51 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 6:41:07 am
+ * Last Modified: Sunday, 19th April 2026 2:39:25 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -13,10 +13,11 @@
  * -----
  * HISTORY:
  */
-import jwt, { SignOptions } from "jsonwebtoken";
+import jwt, { JsonWebTokenError, TokenExpiredError, SignOptions } from "jsonwebtoken";
 import { StringValue } from "ms";
 import { getConfig } from "../config";
 import { AuthContext } from "../types";
+import { AuthError } from "../errors/HttpError";
 /**
  * Signs a JWT token
  * @param {AuthContext} payload The payload for the JWT token
@@ -27,7 +28,11 @@ export function signAuthToken(payload: AuthContext): string {
     const options: SignOptions = {
         expiresIn: config.jwtExpireTime as StringValue | number
     };
-    return jwt.sign(payload, config.jwtSecret, options);
+    try {
+        return jwt.sign(payload, config.jwtSecret, options);
+    } catch (error) {
+        throw new Error("Failed to sign token");
+    }
 }
 
 /**
@@ -37,5 +42,15 @@ export function signAuthToken(payload: AuthContext): string {
  */
 export function verifyAuthToken(token: string): AuthContext {
     const config = getConfig();
-    return jwt.verify(token, config.jwtSecret) as AuthContext;
+    try {
+        return jwt.verify(token, config.jwtSecret) as AuthContext;
+    } catch (error) {
+        if (error instanceof TokenExpiredError) {
+            throw new AuthError("Token expired");
+        }
+        if (error instanceof JsonWebTokenError) {
+            throw new AuthError("Invalid token");
+        }
+        throw error;
+    }
 }

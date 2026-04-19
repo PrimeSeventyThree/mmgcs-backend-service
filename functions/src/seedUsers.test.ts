@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 5:14:15 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 11:24:53 pm
+ * Last Modified: Sunday, 19th April 2026 2:49:06 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -17,7 +17,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { seedUsers, resetSeedUsersForTests } from "./seedUsers";
 import { clearUsers, getAllUsers, getUserByName } from "./services/userStore";
-
+import { NotFoundError } from "./errors/HttpError";
 /**
  * Helper function to set the required environment variables for seeding users
  */
@@ -115,9 +115,8 @@ describe("seedUsers", () => {
         expect(user?.username).toBe("Admin User");
     });
 
-    it("returns undefined for a non-existent email", () => {
-        const user = getUserByName("nonexistentuser");
-        expect(user).toBeUndefined();
+    it("throws NotFoundError for a non-existent user", () => {
+        expect(() => getUserByName("nonexistentuser")).toThrow(NotFoundError);
     });
 
     describe("when env is invalid", () => {

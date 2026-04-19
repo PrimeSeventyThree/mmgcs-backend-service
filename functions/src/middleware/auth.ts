@@ -4,7 +4,7 @@
  * File Created: Sunday, 19th April 2026 6:26:33 am
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 6:38:59 am
+ * Last Modified: Sunday, 19th April 2026 2:43:50 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -29,6 +29,10 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
     const config = getConfig();
     const token = req.cookies?.[config.authCookieName];
 
+    console.debug("auth cookie name", config.authCookieName);
+    console.debug("cookie keys", Object.keys(req.cookies || {}));
+    console.debug("has auth token", Boolean(token));
+
     if (!token) {
         res.status(401).json({ error: "Authentication required" });
         return;
@@ -36,7 +40,12 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
 
     try {
         const payload = verifyAuthToken(token);
-
+        console.debug("verified auth payload", {
+            id: payload.id,
+            email: payload.email,
+            username: payload.username,
+            roles: payload.roles
+        });
         (req as Request & { auth: AuthContext }).auth = {
             id: payload.id,
             email: payload.email,
@@ -45,7 +54,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
         };
 
         next();
-    } catch {
-        res.status(401).json({ error: "Invalid or expired session" });
+    } catch (error) {
+        next(error);
     }
 }

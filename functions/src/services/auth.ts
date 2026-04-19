@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 8:16:52 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 6:46:40 am
+ * Last Modified: Sunday, 19th April 2026 1:55:00 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -17,6 +17,7 @@ import { getUserByName } from "./userStore";
 import { verifyPass } from "./password";
 import { signAuthToken } from "./jwt";
 import { getConfig } from "../config";
+import { AuthError } from "../errors/HttpError";
 
 export interface LoginInput {
     username: string;
@@ -35,29 +36,27 @@ export interface LoginResult {
  * @return {Promise<LoginResult>} The login result containing the user and JWT token
  */
 export async function loginUser(input: LoginInput): Promise<LoginResult> {
-    console.debug(`Attempting to log in user: ${JSON.stringify(input)}`);
     const username = input.username?.trim();
     const password = input.password;
 
     if (!username || !password) {
-        throw new Error("Username and password are required");
+        throw new AuthError();
     }
 
     const user = getUserByName(username);
 
     if (!user) {
-        throw new Error("User not found");
+        throw new AuthError();
     }
 
+    console.debug(`Attempting to log in user: ${username}`);
     const passwordValid = await verifyPass(password, user.passwordHash);
 
     if (!passwordValid) {
-        throw new Error("Wrong password");
+        throw new AuthError();
     }
 
     console.debug(`User ${username} logged in successfully`);
-    console.debug(`User record: ${JSON.stringify(user)}`);
-
     const token = signAuthToken({
         id: user.id,
         email: user.email,

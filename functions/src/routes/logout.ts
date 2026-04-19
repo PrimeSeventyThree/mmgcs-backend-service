@@ -4,7 +4,7 @@
  * File Created: Sunday, 19th April 2026 8:18:24 am
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 8:26:49 am
+ * Last Modified: Sunday, 19th April 2026 12:47:55 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -24,7 +24,8 @@ router.post("/logout", requireAuth, (_req, res) => {
     res.clearCookie(config.authCookieName as string, {
         httpOnly: true,
         secure: config.cookieSecure,
-        sameSite: "lax"
+        sameSite: "lax",
+        path: "/"
     });
 
     res.status(204).send();

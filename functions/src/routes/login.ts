@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 2:01:25 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 7:04:46 am
+ * Last Modified: Sunday, 19th April 2026 2:25:48 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -13,25 +13,21 @@
  * -----
  * HISTORY:
  */
-import { Router as createRouter, Request, Response } from "express";
+import { Router as createRouter, Request, Response, NextFunction } from "express";
 import { loginUser } from "../services/auth";
 import { getConfig } from "../config";
 
-
-const errorMap: Record<string, number> = {
-    "Email and password are required": 400,
-    "Invalid username or password": 401
-};
-
 const router = createRouter();
-router.post("/login", async (req: Request, res: Response) => {
+router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const config = getConfig();
         const result = await loginUser(req.body);
 
-        res.cookie(getConfig().authCookieName as string, result.token, {
+        res.cookie(config.authCookieName as string, result.token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax"
+            secure: config.nodeEnv === "production",
+            sameSite: "lax",
+            path: "/"
         });
 
         res.status(200).json({
@@ -40,10 +36,7 @@ router.post("/login", async (req: Request, res: Response) => {
             expiresIn: result.expiresIn
         });
     } catch (error) {
-        const message = error instanceof Error ? error.message : "Internal server error";
-        const statusCode = errorMap[message] ?? 500;
-
-        res.status(statusCode).json({ error: message });
+        next(error);
     }
 });
 
