@@ -4,7 +4,7 @@
  * File Created: Sunday, 19th April 2026 6:26:33 am
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 2:43:50 pm
+ * Last Modified: Sunday, 19th April 2026 4:08:19 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -17,6 +17,7 @@ import { Request, Response, NextFunction } from "express";
 import { getConfig } from "../config";
 import { verifyAuthToken } from "../services/jwt";
 import { AuthContext } from "../types";
+import { AuthError } from "../errors/HttpError";
 
 /**
  * Middleware to require authentication for protected routes.
@@ -33,19 +34,11 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
     console.debug("cookie keys", Object.keys(req.cookies || {}));
     console.debug("has auth token", Boolean(token));
 
-    if (!token) {
-        res.status(401).json({ error: "Authentication required" });
-        return;
-    }
-
     try {
+        if (!token) {
+            throw new AuthError("Unauthorized");
+        }
         const payload = verifyAuthToken(token);
-        console.debug("verified auth payload", {
-            id: payload.id,
-            email: payload.email,
-            username: payload.username,
-            roles: payload.roles
-        });
         (req as Request & { auth: AuthContext }).auth = {
             id: payload.id,
             email: payload.email,

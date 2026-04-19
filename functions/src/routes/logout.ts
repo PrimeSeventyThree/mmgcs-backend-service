@@ -4,7 +4,7 @@
  * File Created: Sunday, 19th April 2026 8:18:24 am
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 12:47:55 pm
+ * Last Modified: Sunday, 19th April 2026 3:59:39 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -28,7 +28,7 @@ router.post("/logout", requireAuth, (_req, res) => {
         path: "/"
     });
 
-    res.status(204).send();
+    res.status(200).json({ message: "Logged out successfully" });
 });
 
 export default router;
