@@ -67,3 +67,6 @@ USER2_NAME=Admin User
 USER2_ROLES=admin
 USER2_PASSWORD="password456"
 ```
+## API Endpoints
+
+- `POST /api/login`: Logs in a user and returns a JWT token.
