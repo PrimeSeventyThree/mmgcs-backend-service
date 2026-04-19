@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 2:36:45 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 11:21:21 pm
+ * Last Modified: Sunday, 19th April 2026 1:00:44 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -68,6 +68,6 @@ export function getConfig() {
         cookieSecure: getOptionalEnvVar("AUTH_COOKIE_SECURE", "false") === "true",
         jwtSecret: getRequiredEnvVar("JWT_SECRET"),
         jwtExpireTime: getOptionalEnvVar("JWT_EXPIRES_IN", 3600),
-        authCookieName: getOptionalEnvVar("AUTH_COOKIE_NAME", "auth_token")
+        authCookieName: getOptionalEnvVar("AUTH_COOKIE_NAME", "__session")
     };
 }
