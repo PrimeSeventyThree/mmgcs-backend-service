@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 3:53:26 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 9:10:31 pm
+ * Last Modified: Sunday, 19th April 2026 4:50:44 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -24,7 +24,7 @@ let alreadySeeded = false;
  * Loads user data from environment variables and
  * hashes passwords using bcrypt before adding them to the store.
  */
-export function seedUsers() {
+export async function seedUsers() {
     console.debug("Seeding users...");
     if (alreadySeeded) {
         console.debug("Users have already been seeded. Skipping.");
@@ -32,11 +32,17 @@ export function seedUsers() {
     }
     const saltRounds = 12;
 
+    const [hash1, hash2] = await Promise.all([bcrypt.hash(checkEnv("USER1_PASSWORD"), saltRounds), bcrypt.hash(checkEnv("USER2_PASSWORD"), saltRounds)]);
+
+    // clear plaintext from env immediately after hashing
+    delete process.env.USER1_PASSWORD;
+    delete process.env.USER2_PASSWORD;
+
     const user1 = {
         id: "user-1",
         email: checkEnv("USER1_EMAIL").toLowerCase(),
         username: checkEnv("USER1_NAME"),
-        passwordHash: bcrypt.hashSync(checkEnv("USER1_PASSWORD"), saltRounds),
+        passwordHash: hash1,
         roles: parseRoles(checkEnv("USER1_ROLES"))
     };
 
@@ -44,7 +50,7 @@ export function seedUsers() {
         id: "user-2",
         email: checkEnv("USER2_EMAIL").toLowerCase(),
         username: checkEnv("USER2_NAME"),
-        passwordHash: bcrypt.hashSync(checkEnv("USER2_PASSWORD"), saltRounds),
+        passwordHash: hash2,
         roles: parseRoles(checkEnv("USER2_ROLES"))
     };
 
@@ -52,7 +58,7 @@ export function seedUsers() {
     addUser(user2);
     alreadySeeded = true;
 
-    console.debug("Seeded users:", [user1.email, user2.email]);
+    console.debug("Users seeded successfully");
 }
 
 /**

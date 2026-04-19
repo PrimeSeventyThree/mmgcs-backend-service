@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 1:37:41 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 2:14:14 pm
+ * Last Modified: Sunday, 19th April 2026 4:09:19 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -30,11 +30,11 @@ function createApp() {
     const app = express();
     app.use(cookieParser());
     app.use(express.json());
-    app.use(errorHandler);
     app.use("/", healthRoutes);
     app.use("/", loginRoutes);
     app.use("/", meRoutes);
     app.use("/", logoutRoutes);
+    app.use(errorHandler);
     return app;
 }
 

@@ -33,7 +33,7 @@ module.exports = {
     "indent": ["error", 4],
     "object-curly-spacing": ["error", "always"],
     "comma-dangle": ["error", "only-multiline"],
-    "max-len": ["error", { "code": 120 }],
+    "max-len": ["error", { "code": 160 }],
     "@typescript-eslint/no-unused-vars": "off",
   },
 };

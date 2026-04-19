@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 5:14:15 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 2:49:06 pm
+ * Last Modified: Sunday, 19th April 2026 5:20:47 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -53,12 +53,12 @@ function clearSeedEnv(): void {
 }
 
 describe("seedUsers", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
         clearUsers();
         resetSeedUsersForTests();
         clearSeedEnv();
         setRequiredSeedEnv();
-        seedUsers();
+        await seedUsers();
     });
 
     afterEach(() => {
@@ -68,7 +68,9 @@ describe("seedUsers", () => {
     });
 
     it("seeds two users from environment variables", () => {
-        seedUsers();
+        (async () => {
+            await seedUsers();
+        })();
 
         const users = getAllUsers();
 
@@ -100,8 +102,10 @@ describe("seedUsers", () => {
     });
 
     it("checks that users are not seeded twice", () => {
-        seedUsers();
-        seedUsers();
+        (async () => {
+            await seedUsers();
+            await seedUsers();
+        })();
 
         const users = getAllUsers();
         expect(users).toHaveLength(2); // only 2 users expected
@@ -127,10 +131,10 @@ describe("seedUsers", () => {
             setRequiredSeedEnv();
         });
 
-        it("throws when a required environment variable is missing", () => {
+        it("throws when a required environment variable is missing", async () => {
             delete process.env.USER1_EMAIL;
             const error = "Missing required env var: USER1_EMAIL";
-            expect(() => seedUsers()).toThrow(error);
+            await expect(seedUsers()).rejects.toThrow(error);
             expect(getAllUsers()).toHaveLength(0);
         });
     });
