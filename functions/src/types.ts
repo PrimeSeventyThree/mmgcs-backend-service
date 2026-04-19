@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 2:24:56 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 3:35:19 pm
+ * Last Modified: Saturday, 18th April 2026 9:10:31 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -20,7 +20,7 @@ export type UserRole = "user" | "admin";
 export interface UserRecord {
     id: string;
     email: string;
-    displayName: string;
+    username: string;
     passwordHash: string;
     roles: UserRole[];
 }

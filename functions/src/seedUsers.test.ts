@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 5:14:15 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 6:52:33 pm
+ * Last Modified: Saturday, 18th April 2026 11:24:53 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -16,12 +16,14 @@
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { seedUsers, resetSeedUsersForTests } from "./seedUsers";
-import { clearUsers, getAllUsers, getUserByEmail } from "./services/userStore";
+import { clearUsers, getAllUsers, getUserByName } from "./services/userStore";
 
 /**
  * Helper function to set the required environment variables for seeding users
  */
 function setRequiredSeedEnv(): void {
+    process.env.JWT_SECRET = "test-secret";
+
     process.env.USER1_EMAIL = "user@example.com";
     process.env.USER1_NAME = "Test User";
     process.env.USER1_PASSWORD = "password123";
@@ -37,6 +39,8 @@ function setRequiredSeedEnv(): void {
  * Helper function to clear the environment variables used for seeding users
  */
 function clearSeedEnv(): void {
+    delete process.env.JWT_SECRET;
+
     delete process.env.USER1_EMAIL;
     delete process.env.USER1_NAME;
     delete process.env.USER1_PASSWORD;
@@ -75,7 +79,7 @@ describe("seedUsers", () => {
         expect(users[0]).toMatchObject({
             id: "user-1",
             email: "user@example.com",
-            displayName: "Test User",
+            username: "Test User",
             roles: ["user"]
         });
 
@@ -84,7 +88,7 @@ describe("seedUsers", () => {
         expect(users[1]).toMatchObject({
             id: "user-2",
             email: "admin@example.com",
-            displayName: "Admin User",
+            username: "Admin User",
             roles: ["admin"]
         });
 
@@ -105,14 +109,14 @@ describe("seedUsers", () => {
 
     it("returns the correct user for a valid email", () => {
         console.log(getAllUsers());
-        const user = getUserByEmail("admin@example.com");
+        const user = getUserByName("Admin User");
         console.debug("Retrieved user in test:", user);
         expect(user).toBeDefined();
-        expect(user?.email).toBe("admin@example.com");
+        expect(user?.username).toBe("Admin User");
     });
 
     it("returns undefined for a non-existent email", () => {
-        const user = getUserByEmail("nonexistentuser@example.com");
+        const user = getUserByName("nonexistentuser");
         expect(user).toBeUndefined();
     });
 

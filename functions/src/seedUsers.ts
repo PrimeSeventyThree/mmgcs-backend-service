@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 3:53:26 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 4:57:17 pm
+ * Last Modified: Saturday, 18th April 2026 9:10:31 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -35,7 +35,7 @@ export function seedUsers() {
     const user1 = {
         id: "user-1",
         email: checkEnv("USER1_EMAIL").toLowerCase(),
-        displayName: checkEnv("USER1_NAME"),
+        username: checkEnv("USER1_NAME"),
         passwordHash: bcrypt.hashSync(checkEnv("USER1_PASSWORD"), saltRounds),
         roles: parseRoles(checkEnv("USER1_ROLES"))
     };
@@ -43,7 +43,7 @@ export function seedUsers() {
     const user2 = {
         id: "user-2",
         email: checkEnv("USER2_EMAIL").toLowerCase(),
-        displayName: checkEnv("USER2_NAME"),
+        username: checkEnv("USER2_NAME"),
         passwordHash: bcrypt.hashSync(checkEnv("USER2_PASSWORD"), saltRounds),
         roles: parseRoles(checkEnv("USER2_ROLES"))
     };

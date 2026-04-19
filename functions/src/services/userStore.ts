@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 3:45:36 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Saturday, 18th April 2026 6:52:17 pm
+ * Last Modified: Saturday, 18th April 2026 11:09:10 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -23,16 +23,19 @@ const users = new Map<string, UserRecord>();
  * @param {UserRecord} user - The user to add.
  */
 export function addUser(user: UserRecord): void {
-    users.set(user.email, user);
+    console.debug(`Adding user: ${JSON.stringify(user)}`);
+    users.set(user.username, user);
 }
 
 /**
- * Get a user by their email.
- * @param {string} email - The email of the user to retrieve.
+ * Get a user by their user name.
+ * @param {string} username - The username of the user to retrieve.
  * @return {UserRecord | undefined} The user if found, otherwise undefined.
  */
-export function getUserByEmail(email: string): UserRecord | undefined {
-    return users.get(email.toLowerCase());
+export function getUserByName(username: string): UserRecord | undefined {
+    console.debug(`Looking up user by username: ${username}`);
+    console.debug(`Current users in store: ${JSON.stringify(Array.from(users.values()))}`);
+    return users.get(username);
 }
 
 /**
