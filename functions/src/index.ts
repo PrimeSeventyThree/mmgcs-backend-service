@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 1:05:08 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 5:14:04 pm
+ * Last Modified: Sunday, 19th April 2026 5:44:13 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -40,11 +40,8 @@ setGlobalOptions({ maxInstances: 1 });
 
 /**
  * Main init function. Seeds users first, then creates the runtime
- * @return {object} Runtime object
  */
-async function init() {
-    // Seed the user store with initial users before handling any requests.
+export const api = onRequest(async (req, res) => {
     await seedUsers();
-    return onRequest(app);
-}
-export const api = init();
+    app(req, res);
+});
