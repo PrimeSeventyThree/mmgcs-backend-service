@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 1:37:41 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 7:06:57 am
+ * Last Modified: Sunday, 19th April 2026 8:27:01 am
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -15,10 +15,11 @@
  */
 
 import express from "express";
-import loginRoutes from "./routes/login";
 import cookieParser from "cookie-parser";
 import healthRoutes from "./routes/health";
+import loginRoutes from "./routes/login";
 import meRoutes from "./routes/me";
+import logoutRoutes from "./routes/logout";
 
 /**
  * Creates the main application instance.
@@ -31,6 +32,7 @@ function createApp() {
     app.use("/", healthRoutes);
     app.use("/", loginRoutes);
     app.use("/", meRoutes);
+    app.use("/", logoutRoutes);
     return app;
 }
 

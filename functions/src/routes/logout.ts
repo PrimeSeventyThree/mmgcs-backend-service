@@ -1,0 +1,33 @@
+/*
+ * File: logout.ts
+ * Project: backend-app
+ * File Created: Sunday, 19th April 2026 8:18:24 am
+ * Author: Andrei Grichine (andrei.grichine@gmail.com)
+ * -----
+ * Last Modified: Sunday, 19th April 2026 8:26:49 am
+ * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
+ * -----
+ * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
+ * This file is provided for evaluation purposes only.
+ * See LICENSE.txt for full terms.
+ * -----
+ * HISTORY:
+ */
+import { Router as createRouter } from "express";
+import { requireAuth } from "../middleware/auth";
+import { getConfig } from "../config";
+
+const router = createRouter();
+
+router.post("/logout", requireAuth, (_req, res) => {
+    const config = getConfig();
+    res.clearCookie(config.authCookieName as string, {
+        httpOnly: true,
+        secure: config.cookieSecure,
+        sameSite: "lax"
+    });
+
+    res.status(204).send();
+});
+
+export default router;

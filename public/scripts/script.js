@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 11:34:17 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 8:03:43 am
+ * Last Modified: Sunday, 19th April 2026 3:14:03 pm
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -15,24 +15,39 @@
  */
 
 const form = document.getElementById("login-form");
-const formContainer = document.getElementById("form-container");
 const message = document.getElementById("message");
 const headerMessage = document.getElementById("header-message");
+const logoutButton = document.getElementById("logout-button");
+const profileButton = document.getElementById("profile-button")
+let isClicked = false;
 
+/*
+ * Page load/refresh handler
+ */
 document.addEventListener("DOMContentLoaded", async () => {
+    if (!sessionStorage.getItem("loggedIn")) {
+        showLoggedOutState();
+        return;
+    }
     try {
         const user = await fetchCurrentUser();
-        console.log("/me returned:", user);
+        console.log("/me returned:", user.username);
 
         if (user) {
             showLoggedInState(user);
+        } else {
+            showLoggedOutState();
         }
     } catch (error) {
+        showLoggedOutState();
         showMessage(`Failed to fetch current user`, true);
         console.error(`Error fetching current user: ${error.message}`, error);
     }
 });
 
+/**
+ * User login handler
+ */
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -40,94 +55,150 @@ form.addEventListener("submit", async (event) => {
     const password = document.getElementById("password").value;
 
     message.hidden = true;
-    // console.log("submitting login");
+
     try {
         const response = await fetch("/login", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             credentials: "same-origin",
-            body: JSON.stringify({
-                username,
-                password
-            })
+            body: JSON.stringify({ username, password })
         });
 
-        try {
-            // console.log("login response status", response.status);
-            const data = await response.json().catch(() => ({}));
-            if (!response.ok) {
-                showMessage(data.error || "Login failed", true);
-                return;
-            }
-            // console.log("Login successful:", data);
-            if (data) {
-                showLoggedInState(data);
-                return;
-            }
-        } catch (error) {
-            console.error(`Login error: ${error.name}, ${error.message}, ${error.stack}`);
+        const data = await response.json().catch(() => ({}));
 
-            if (error instanceof TypeError) {
-                showMessage(`Network error: ${error.message}`, true);
-            } else {
-                showMessage("Login failed", true);
-            }
+        if (!response.ok) {
+            console.error(`Login error: ${data.error}`);
+            showMessage(data.error || "Login failed", true);
+            return;
         }
+
+        sessionStorage.setItem("loggedIn", "1");
+        showLoggedInState(data);
+
     } catch (error) {
-        showMessage("Request failed", true);
+        if (error instanceof TypeError) {
+            showMessage(`Network error: ${error.message}`, true);
+        } else {
+            showMessage("Request failed", true);
+        }
     }
 });
 
 function showMessage(text, isError = false) {
     message.hidden = false;
-    message.textContent = text;
+    message.innerHTML = text;
     message.className = "message " + (isError ? "error" : "success");
 }
 
 function showLoggedInState(user) {
-    showMessage(`Your email is ${user.email}`);
     headerMessage.textContent = `Welcome, ${user.username}!`;
-    formContainer.hidden = true;
-    formContainer.style.display = "none";
+    form.hidden = true;
+    form.style.display = "none";
+    logoutButton.hidden = false;
+    profileButton.hidden = false;
 }
 
-async function fetchCurrentUser() {
-    let response;
+function showLoggedOutState() {
+    headerMessage.textContent = "Login";
+    form.hidden = false;
+    form.style.display = "flex";
+    message.hidden = true;
+    logoutButton.hidden = true;
+    profileButton.hidden = true;
+}
 
+/**
+ * Function to fetch currently logged in user profile
+ */
+async function fetchCurrentUser() {
     try {
-        response = await fetch("/me", {
+        const response = await fetch("/me", {
             method: "GET",
             credentials: "same-origin"
         });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (response.status === 401) {
+            return null;
+        }
+
+        if (!response.ok) {
+            showMessage(data.error || `Request failed: ${response.status}`, true);
+            return null;
+        }
+
+        return data ?? null;
+
     } catch (error) {
-        const errorMessage = `Failed to fetch current user: ${error.message}`;
-        showMessage(errorMessage, true);
-        console.error(errorMessage, error.message);
+        if (error instanceof TypeError) {
+            showMessage(`Network error: ${error.message}`, true);
+        } else {
+            showMessage("Failed to fetch current user", true);
+        }
         return null;
     }
+}
 
-    if (response.status === 401) {
+/**
+ * Logout handler
+ */
+async function logout() {
+    let response;
+    try {
+        response = await fetch("/logout", {
+            method: "POST",
+            credentials: "same-origin"
+        });
+    } catch (error) {
+        const errorMessage = `Logout request failed: ${error.message}`;
+        showMessage(errorMessage, true);
+        console.error(errorMessage, error.message);
         return null;
     }
 
     if (!response.ok) {
-        console.error();
-        const errorMessage = `Unexpected response fetching current user: ${response.status} ${response.statusText}`;
+        const errorMessage = `Logout failed: ${response.status} ${response.statusText}`;
         showMessage(errorMessage, true);
-        console.error(errorMessage, error.message);
-        return null;
-    }
-
-    try {
-        const data = await response.json();
-        return data ?? null;
-    } catch (parseError) {
-        const errorMessage = `Failed to parse user JSON: ${parseError.message} ${response.statusText}`;
-        showMessage(errorMessage, true);
-        console.error(errorMessage, error.message);
-        return null;
+        console.error(errorMessage, error.message)
     }
 }
 
+/*
+ * Logout button handler
+ */
+logoutButton.addEventListener("click", async () => {
+    try {
+        await logout();
+        sessionStorage.removeItem("loggedIn");
+        showLoggedOutState();
+        showMessage("Logged out");
+        setTimeout(() => { message.hidden = true; }, 1000); //auto hide message
+    } catch (error) {
+        console.error(`Logout error: ${error}`);
+        showMessage("Logout failed", true);
+    }
+});
+
+/*
+ * Show profile "toggle" button handler
+ */
+profileButton.addEventListener("click", async () => {
+    isClicked = !isClicked;
+    profileButton.textContent = isClicked ? 'Hide profile' : 'Show profile';
+
+    if (!isClicked) {
+        message.hidden = true;
+        return;
+    }
+
+    try {
+        const user = await fetchCurrentUser();
+        if (user) {
+            showMessage(`Your Profile:<br>email :${user.email}<br>roles:${user.roles.join(", ")}`);
+        }
+    } catch (error) {
+        console.error(`Fetch user error: ${error}`);
+        showMessage("Fetch user failed", true);
+    }
+});

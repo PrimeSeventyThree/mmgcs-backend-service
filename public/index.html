@@ -9,18 +9,20 @@
         <style></style>
     </head>
     <body>
-        <h1 id="header-message">Login</h1>
-        <div class="form" id="form-container">
+        <h1 id="header-message" class="header">Login</h1>
+        <div class="form">
             <form id="login-form">
-                <div>Username</div>
+                <div class="label">Username</div>
                 <div><input id="username" name="username" type="text" autocomplete="username" required /></div>
 
-                <div>Password</div>
+                <div class="label">Password</div>
                 <div><input id="password" name="password" type="password" autocomplete="current-password" required /></div>
 
-                <button type="submit">Log in</button>
+                <button type="submit" class="label">Log in</button>
             </form>
+            <div id="message" class="message" hidden></div>
+            <button id="profile-button" hidden class="label">Show Profile</button>
+            <button id="logout-button" hidden class="logout">Logout</button>
         </div>
-        <div id="message" class="message" hidden></div>
     </body>
 </html>

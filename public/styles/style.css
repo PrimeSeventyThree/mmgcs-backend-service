@@ -4,7 +4,7 @@
  * File Created: Saturday, 18th April 2026 11:35:37 pm
  * Author: Andrei Grichine (andrei.grichine@gmail.com)
  * -----
- * Last Modified: Sunday, 19th April 2026 6:12:15 am
+ * Last Modified: Sunday, 19th April 2026 10:07:53 am
  * Modified By: Andrei Grichine (andrei.grichine@gmail.com>)
  * -----
  * Copyright 2026 - 2026, Andrei Grichine. All Rights Reserved.
@@ -31,6 +31,7 @@ body {
     flex-direction: column;
     gap: 12px;
     max-width: 240px;
+    min-width: 240px;
     margin: 0 auto;
 }
 
@@ -49,13 +50,16 @@ button {
     border: 1px solid #b0d6ea;
     border-radius: 4px;
 }
-
+.logout {
+    color: #ce0055
+}
 .message {
     margin-top: 16px;
     padding: 10px;
     border-radius: 6px;
     background: #f3f3f3;
     white-space: pre-wrap;
+    text-align: center;
 }
 
 .error {
@@ -63,5 +67,13 @@ button {
 }
 
 .success {
-    color: #0a6b2d;
+    color: #0a6b59;
+}
+
+.label {
+    color: #0a778b;
+}
+
+.header {
+    color: #343434
 }
