@@ -116,8 +116,9 @@ https://firebase.google.com/docs/hosting/manage-cache
 
 ## 5. Build the Project
 
+Make sure you're still in the functions folder, then build the backend:
+
 ```bash
-cd functions
 npm run build
 ```
 
