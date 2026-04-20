@@ -144,7 +144,7 @@ Seeding users...
 Adding user: Test User
 Adding user: Admin User
 
-Seeded users: [ 'user@example.com', 'admin@example.com' ]
+Users seeded successfully
 
 ✔  functions: Loaded functions definitions from source: api.
 ✔  functions[us-central1-api]: http function initialized (http://127.0.0.1:5001/mmgsc-demo/us-central1/api).
