@@ -158,7 +158,7 @@ Seeded users: [ 'user@example.com', 'admin@example.com' ]
 ├───────────┼────────────────┼─────────────────────────────────┤
 │ Functions │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions │
 ├───────────┼────────────────┼─────────────────────────────────┤
-│ Hosting   │ 127.0.0.1:5002 │ n/a                             │
+│ Hosting   │ 127.0.0.1:5000 │ n/a                             │
 └───────────┴────────────────┴─────────────────────────────────┘
 ```
 
@@ -166,10 +166,10 @@ Seeded users: [ 'user@example.com', 'admin@example.com' ]
 
 ## 7. Verify Service Health
 
-Note the port number "hosting" service is using (5002 in this case - see above) and adjust accordingly commands below.
+Note the port number "hosting" service is using (5000 in this case - see above) and adjust accordingly commands below.
 
 ```bash
-curl -i http://localhost:5002/health
+curl -i http://127.0.0.1:5001/mmgsc-demo/us-central1/api/health
 ```
 
 Expected:
@@ -185,7 +185,7 @@ Expected:
 ### 8.1 Login
 
 ```bash
-curl -i -X POST http://localhost:5002/login \
+curl -i -X POST http://127.0.0.1:5001/mmgsc-demo/us-central1/api/login \
   -H "Content-Type: application/json" \
   -d '{"username":"Test User","password":"password123"}'
 ```
@@ -203,7 +203,7 @@ Expected:
 ### 8.2 Get Current User
 
 ```bash
-curl -i http://localhost:5002/me \
+curl -i http://127.0.0.1:5001/mmgsc-demo/us-central1/api/me \
   -H "Cookie: __session=<token>"
 ```
 
@@ -218,7 +218,7 @@ Expected:
 ### 8.3 Logout
 
 ```bash
-curl -i -X POST http://localhost:5002/logout \
+curl -i -X POST http://127.0.0.1:5001/mmgsc-demo/us-central1/api/logout \
   -H "Cookie: __session=<token>"
 ```
 
@@ -233,7 +233,7 @@ Expected:
 ### 8.4 Verify Logout
 
 ```bash
-curl -i http://localhost:5002/me
+curl -i http://127.0.0.1:5001/mmgsc-demo/us-central1/api/me
 ```
 
 Expected:
