@@ -167,7 +167,7 @@ Users seeded successfully
 
 ## 7. Verify Service Health
 
-Note the port number "hosting" service is using (5000 in this case - see above) and adjust accordingly commands below.
+Use curl to verify the API is live:
 
 ```bash
 curl -i http://127.0.0.1:5001/mmgsc-demo/us-central1/api/health
