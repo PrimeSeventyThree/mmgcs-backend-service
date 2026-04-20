@@ -139,12 +139,7 @@ Expected output:
 i  functions: Loaded environment variables from .env.
 Serving at port 8913
 
-Seeding users...
-
-Adding user: Test User
-Adding user: Admin User
-
-Users seeded successfully
+✔  hosting[mmgsc-demo]: Local server: http://127.0.0.1:5000
 
 ✔  functions: Loaded functions definitions from source: api.
 ✔  functions[us-central1-api]: http function initialized (http://127.0.0.1:5001/mmgsc-demo/us-central1/api).
@@ -246,6 +241,8 @@ Expected:
 ---
 
 ## 9 Two user stories
+
+To access the webUI, point your web browser to the firebase's "Hosting" URL provided above. i.e http://127.0.0.1:5000/ (check the firebase output "Local server" )
 
 ### 9.1 User Story 1
 
