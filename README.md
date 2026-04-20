@@ -1,8 +1,7 @@
-# This repo is for the MMGSC backend and frontend assignment.
+# This project is provided strictly for evaluation as part of a hiring process.
 
-### Part1: The frontend application
-
-.....
+`No production or commercial use is permitted without explicit written agreement.`
+`See LICENSE.txt for full terms.`
 
 ### Part2: The backend API
 
@@ -118,6 +117,7 @@ https://firebase.google.com/docs/hosting/manage-cache
 ## 5. Build the Project
 
 ```bash
+cd functions
 npm run build
 ```
 
